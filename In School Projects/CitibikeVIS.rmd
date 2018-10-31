@@ -1,0 +1,152 @@
+---
+title: "citibike 2017: Duration and Usage"
+author: "Dizzy Farbanish, Bikalpa Baniya, Jesus Martinez"
+date: "5/16/2018"
+output: html_document
+---
+We explored trends in citibike usage in the "citibike" package built in to rstudio.
+
+The citibike package has 4 data sets.
+
+* *station_months*
+* *station_summary*
+* *trip_summary*
+* *trips*
+
+We used *station_summary* and *trips* in our visualizations. *station_summary* is geographical name longitude and latitude, open and closing time. The *trips* dataset includes all citibike trips made in 2017, and this includes trip duration, start_time, end_time, stations, and description of the user.
+
+Our visualizations focus on the age and gender of citibike users, and year round trends in station activity.
+
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+library(dbplyr)  ## Note the 'b'; this is not dplyr
+library(mdsr)    ## Package for our book
+library(RMySQL)  ## Standard R/SQL interface package
+library(ggplot2)
+library(RColorBrewer)
+db <- dbConnect_scidb("citibike")
+```
+
+
+
+**Graphical Representation**
+```{r warning= FALSE, echo= FALSE, results="hide", message= FALSE}
+#CREATING AN SQL STRING
+data_string <- "
+SELECT
+duration, birth_year, gender,user_type,
+duration/60 AS Min_Dur
+FROM trips
+WHERE user_type = 'Subscriber' AND birth_year >= 1930 AND gender <> 0
+ORDER BY RAND()
+LIMIT 0,500"
+#*Analyzing the impact of gender and age on the duration of trips people take
+#*We utilize some constraints to take into account major outliers
+#*We are also only looking at fulltime subscribers
+#*We hypothesized that younger men might be more inclined to using this program
+#a) Fitness b) Safety
+
+
+```
+
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+#TRANSFERING OUR SQL CODE INTO R
+main_data<- db %>% dbGetQuery(data_string) %>% collect()
+```
+
+```{r warning= FALSE, echo= FALSE, results= "hide", message= FALSE}
+#WRANGLING MAIN_DATA TO CLEAN VALUES
+graph_data <-main_data %>% mutate(Gen = recode(main_data$gender, `1`= "male", `2` = "female"), gender=factor(gender))
+
+
+
+#IMPLEMENTING A TEXT STYLE THEME FOR OUR GRAPHS
+mynamestheme <- theme(plot.title = element_text(family = "Courier", face = "bold", size = (15)),
+                  legend.title = element_text(colour = "black",  face = "bold.italic", family = "Courier"),
+                  legend.text = element_text(face = "italic", colour="black",family = "Courier"),
+                   axis.title = element_text(family = "Courier", size = (10), colour = "black"),
+                   axis.text = element_text(family = "Courier", colour = "black", size = (8)))
+
+main_plot <- graph_data %>% filter(Min_Dur <= 100) %>%
+  ggplot(aes(x=2017-birth_year, y=Min_Dur)) +
+  geom_point(aes(color=Gen)) +
+  geom_smooth() +
+  facet_wrap(~Gen) +
+  labs(x = "Year of Birth", y = "Duration in Minutes", color = "Key", title = "Duration by Birth Year") +
+  theme_grey() #+
+  #mynamestheme
+  #theme(legend.position='none') + legends guide
+
+main_plot
+```
+
+This graph maps the year of birth of a rider against the duration of their rides. It is interesting that older women seem to go on longer bike rides than older men, and the upward trend in duration from older women to younger women is much greater than the upward trend in duration men. Men seem to maintain a fairly contant ride duration with a slight downward trend. It is also interesting that when a random sample of 500 bikers is selected from the larger data set, there are nearly three times the amount of male riders (we did the math). Additionally, it is evident that young people are the majority of the user population as the data points tend to cluster in the left side of the two graphs. Samples are subject to variation upon knit due to random sampling.
+
+
+```{r warning= FALSE, echo= FALSE, results= "hide", message= FALSE}
+library(tidyverse)  
+library(mdsr)    
+library(RMySQL)  
+library(lubridate)
+library(ggthemes)
+db <- dbConnect_scidb("citibike")
+dbListTables(db)
+```
+
+
+```{r warning= FALSE, echo= FALSE, results="hide", message= FALSE}
+query_string <- "SELECT s.lat, s.lon, s.station_id, s.name,  
+      MONTH (start_time) AS month,
+      HOUR(start_time) AS hour,
+      DAY(start_time) AS day,
+      start_time,
+      count(*) AS bike_out
+FROM station_summary AS s
+LEFT JOIN trips AS t ON s.station_id = t.start_station_id
+GROUP BY station_id, month, day
+HAVING bike_out > 200
+ORDER BY bike_out DESC;"
+df_bikemap <- db %>% dbGetQuery(query_string) %>% collect()
+```
+
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+library(ggmap)
+library(ggplot2)
+library(RColorBrewer)
+nyc_map <- get_map("Lower Manhattan, New York", zoom=13, source ="google")
+```
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+df1 <- df_bikemap %>% filter(month==toString(3),day==toString(1)) %>% select(lat,lon,bike_out)
+
+ggmap(nyc_map)+ geom_point(data=df1, aes(x=lon, y=lat, color=bike_out)) + scale_colour_gradient(name = "Number of bikes checked out",low = "blue",high = "red", limit = c(200,400))+ggtitle("Most active station on March 1st, 2017")
+```
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+df2 <- df_bikemap %>% filter(month==toString(8),day==toString(1)) %>% select(lat,lon,bike_out)
+
+ggmap(nyc_map)+ geom_point(data=df2, aes(x=lon, y=lat, color=bike_out)) + scale_colour_gradient(name = "Number of bikes checked out",low = "blue",high = "red", limit = c(200,400))+ggtitle("Most active station on August 2nd, 2017")
+```
+
+```{r warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+df3 <- df_bikemap %>% filter(month==toString(1),day==toString(1)) %>% select(lat,lon,bike_out)
+
+ggmap(nyc_map)+ geom_point(data=df2, aes(x=lon, y=lat, color=bike_out)) + scale_colour_gradient(name = "Number of bikes checked out",low = "blue",high = "red", limit = c(200,400))+ggtitle("Most active station on January 1st, 2017")
+```
+
+This map shows how usage of stations changes throughout the year, based off of the amount of checkouts at a station in a given day. The map only displays all stations that check out more than 200 bikes per day. It is interesting to see which stations have more regular year round bike users and which have more seasonal users. Winter months display much fewer stations checking out more than 200 bikes per day, and tend to show only stations in Mid Manhattan; with the exception of New Years Day which still has a fairly active station use. In the Summer, when schools is out, there are many more frequently used stations and many more of them cluster around parks. (Grey Dots indicate more than 400 checkouts).
+
+
+#Methodology
+
+*For the first visualization:*
+
+
+The approach of the duration analysis used the data set “trips” to explore what factors impacted the duration of trips individuals who used the citi program. The main variables chosen from this data set were gender, birth year, and of course duration (in seconds which we converted to minutes). Because the data set contained observations from the entire year of 2017, we accounted for factors like time of year by selecting a random sample of 500 observations. As we selected our random data, we also implemented a few filtering restrictions such as making the birth year greater than 1930 and the duration under 100 minutes. These filtering restrictions accounted for outliers roughly; we noticed that after taking 10 random samples that points outside of these parameters significantly distorted our graphs. Our analysis takes caution in the fact that a formal 2 times the standard deviation variable wasn’t explicitly used.
+
+*For the second visualization:*
+
+
+First, the trips dataset was used to extract the days, months and year from the checked out bikes. They were then grouped by each station and days of the year, and number of bikes checked out were calculated. Now the station id was used to join with the station_summary dataset to get the geographical locations of the stations. Since there were thousands of stations and plotting all of them is not viable, only stations with more than 200 check-outs were considered. Finally ggmap was used to get the lower Manhattan map and plot the stations.
