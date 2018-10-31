@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SubAnalysis</title>
+
+    <link rel="icon" href="favicon.ico" type="image/png" />
+
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+
+  </head>
+  <body>
+    <main>
+      <p class="intro2">Results</p>
+      <div style="color: white"> <h2> Usage vs Cost</h2> </div>
+      <div class="ct-chart"></div>
+      <div style="color: white"> <h2> Overall Usage </h2> </div>
+      <div class="ct-chart-pie"></div>
+      <div style="color: white"> <h2> Usage compared to Expenditure </h2> </div>
+      <div class="ct-chart-bar"></div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+     </main>
+
+
+      <script src="js/main.js"></script>
+
+      <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+      window.sr = ScrollReveal();
+      sr.reveal('.showcase-left', {
+        duration: 2000,
+        origin:'left',
+        delay: 1000,
+        distance:'300px'
+      });
+      sr.reveal('.showcase-right', {
+        duration: 2000,
+        origin:'right',
+        distance:'300px'
+      });
+      sr.reveal('.showcase-btn', {
+        duration: 2000,
+        delay: 1000,
+        origin:'bottom'
+      });
+  </script>
+
+  <script>
+  $(function() {
+    // Smooth Scrolling
+    $('a[href*="#"]:not([href="#"])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html, body').animate({
+            scrollTop: target.offset().top
+          }, 1000);
+          return false;
+        }
+      }
+    });
+  });
+  </script>
+
+  </body>
+  <script>
+
+  array = arr;
+
+
+  var data = {
+    // A labels array that can contain any sort of values
+
+    labels: (array.data2["Amazon"][1]),
+    // Our series array that contains series objects or in this case series data arrays
+    series: [
+      (array.data2["Amazon"][2]), [250, 250, 250, 250 ,250, 250, 250, 250, 250 ,250]
+    ]
+  };
+
+  // As options we currently only set a static size of 300x200 px. We can also omit this and use aspect ratio containers
+  // as you saw in the previous example
+  var options = {
+    width: 500,
+    height: 300,
+
+    axisX: { showGrid: false,
+      labelInterpolationFnc: function(value) {
+        return Math.abs(value)/100;
+      }
+    },
+    axisY: {
+      showGrid: false,
+      labelInterpolationFnc: function(value) {
+        return '$' + Math.abs(value)/10;
+      }
+    }
+  };
+
+  // Create a new line chart object where as first parameter we pass in a selector
+  // that is resolving to our chart container element. The Second parameter
+  // is the actual data object. As a third parameter we pass in our custom options.
+  new Chartist.Line('.ct-chart', data, options);
+  </script>
+
+  <script>
+  //array = new dataArray();
+        var fitus = 0;
+        var entus = 0;
+        var profus = 0;
+        var homeus = 0;
+        var comus = 0;
+        var shopus = 0;
+        
+        var fitcos = 0;
+        var entcos = 0;
+        var profcos = 0;
+        var homecos = 0;
+        var comcos = 0;
+        var shopcos = 0;
+        
+        
+        //console.log(array.data);
+        for (var item in array.data){
+            if (array.data[item][0] === "fitness"){
+                fitus += array.data[item][2];
+                fitcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "entertainment"){
+                entus += array.data[item][2];
+                entcos += array.data[item][1];
+          }
+            if (array.data[item][0] === "professional"){
+                profus += array.data[item][2];
+                profcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "home"){
+                homeus += array.data[item][2];
+                homecos += array.data[item][1];
+            }
+            if (array.data[item][0] === "communication"){
+                comus += array.data[item][2];
+                comcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "shopping"){
+                shopus += array.data[item][2];
+                shopcos += array.data[item][1];
+            }
+            
+            
+        }
+        
+   var data = {
+    labels: ['Fitness', 'Entertainment', 'Professional', 'Home', 'Communication', 'Shopping'],
+      series: [
+          //[5, 4, 3, 7, 5, 10, 3, 4, 8, 10, 6, 8],
+      //[3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4]
+      [fitus, entus, profus, homeus, comus, shopus],
+      [fitcos, entcos, profcos, homecos, comcos, shopcos]
+    ]
+  };
+
+  var options = {
+    seriesBarDistance: 15,
+    axisX: { showGrid: false },
+    axisY: {
+      showGrid: false,
+      showLabel: false
+     },
+    width: 700,
+    height: 300
+  };
+
+  var responsiveOptions = [
+    ['screen and (min-width: 641px) and (max-width: 1024px)', {
+      seriesBarDistance: 10,
+      axisX: {
+        labelInterpolationFnc: function (value) {
+          return value;
+        }
+      }
+    }],
+    ['screen and (max-width: 640px)', {
+      seriesBarDistance: 5,
+      axisX: {
+        labelInterpolationFnc: function (value) {
+          return value[0];
+        }
+      }
+    }]
+  ];
+
+  new Chartist.Bar('.ct-chart-bar', data, options, responsiveOptions);
+  </script>
+
+  <script>
+
+  //var array = [];
+  //array = new dataArray();
+  var fitus = 0;
+        var entus = 0;
+        var profus = 0;
+        var homeus = 0;
+        var comus = 0;
+        var shopus = 0;
+        
+        var fitcos = 0;
+        var entcos = 0;
+        var profcos = 0;
+        var homecos = 0;
+        var comcos = 0;
+        var shopcos = 0;
+        
+        
+        //console.log(array.data);
+        for (var item in array.data){
+            if (array.data[item][0] === "fitness"){
+                fitus += array.data[item][2];
+                fitcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "entertainment"){
+                entus += array.data[item][2];
+                entcos += array.data[item][1];
+          }
+            if (array.data[item][0] === "professional"){
+                profus += array.data[item][2];
+                profcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "home"){
+                homeus += array.data[item][2];
+                homecos += array.data[item][1];
+            }
+            if (array.data[item][0] === "communication"){
+                comus += array.data[item][2];
+                comcos += array.data[item][1];
+            }
+            if (array.data[item][0] === "shopping"){
+                shopus += array.data[item][2];
+                shopcos += array.data[item][1];
+            }
+            
+            
+        }
+
+  var chart = new Chartist.Pie('.ct-chart-pie', {
+  series: [fitus, entus, profus, homeus, comus, shopus],
+  labels: ['Fitness', 'Entertainment', 'Professional', 'Home', 'Communication', 'Shopping']
+}, {
+  donut: true,
+  showLabel: true,
+  height: 500,
+  width: 500
+});
+
+chart.on('draw', function(data) {
+  if(data.type === 'slice') {
+    // Get the total path length in order to use for dash array animation
+    var pathLength = data.element._node.getTotalLength();
+
+    // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+    data.element.attr({
+      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+    });
+
+    // Create animation definition while also assigning an ID to the animation for later sync usage
+    var animationDefinition = {
+      'stroke-dashoffset': {
+        id: 'anim' + data.index,
+        dur: 1000,
+        from: -pathLength + 'px',
+        to:  '0px',
+        easing: Chartist.Svg.Easing.easeOutQuint,
+        // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+        fill: 'freeze'
+      }
+    };
+
+    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+    if(data.index !== 0) {
+      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+    }
+
+    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+    data.element.attr({
+      'stroke-dashoffset': -pathLength + 'px'
+    });
+
+    // We can't use guided mode as the animations need to rely on setting begin manually
+    // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+    data.element.animate(animationDefinition, false);
+  }
+});
+
+// For the sake of the example we update the chart every time it's created with a delay of 8 seconds
+chart.on('created', function() {
+  if(window.__anim21278907124) {
+    clearTimeout(window.__anim21278907124);
+    window.__anim21278907124 = null;
+  }
+  window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
+});
+  </script>
+
+</html>
