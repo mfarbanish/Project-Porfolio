@@ -1,0 +1,161 @@
+/* Typography */
+
+html {
+    font-family: 'Quicksand', sans-serif;
+}
+
+body {
+   background-image: url("./image/background.jpg");
+}
+
+@media (min-width: 576px) {
+    html {
+	font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+	font-size: 16px;
+    }
+}
+
+@media (min-width: 992px) {
+    html {
+	font-size: 18px;
+    }
+}
+
+@media (min-width: 1200px) {
+    html {
+	font-size: 20px;
+    }
+}
+
+
+/* Custom Styles */
+
+main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    padding: 0 30px;
+    text-align: center;
+}
+
+main > .intro {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 3.75em;
+    font-weight: 600;
+    color: white;
+}
+
+main > .intro2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 3.75em;
+    font-weight: 600;
+    color: white;
+    margin-top: 50px;
+}
+
+main > .sub {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: white;
+    margin-top: 30px;
+}
+
+main > .tagline {
+	font-size: 1rem;
+	margin: 1.5rem 0;
+	font-weight: 100;
+  margin-top: -15px;
+  color: white;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    font-family: 'Quicksand', sans-serif;
+    border: none;
+    color: white;
+    text-align: center;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    height: 45px;
+    width: 200px;
+    left: 50%;
+    top: 50%;
+    margin-top: 50px;   /* = -height / 2   */
+    margin-left: -100px; /* = -width / 2    */
+    position: fixed;     /* Fixed is better */
+    font-size: 16px;
+    border-radius: 25px;
+    font-weight:600;
+}
+
+.inputES{
+    width: 20%;
+    margin-left: 570px;
+    border-radius: 15px;
+    margin-top: -10px;
+    font-size: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 800;
+    text-align: center;
+}
+.button2 {
+    background-color: #4CAF50; /* Green */
+    font-family: 'Quicksand', sans-serif;
+    border: none;
+    color: white;
+    text-align: center;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    height: 45px;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    margin-top: 550px;   /* = -height / 2   */
+    margin-left: -150px; /* = -width / 2    */
+    position:absolute;
+    font-size: 16px;
+    border-radius: 25px;
+    font-weight:600;
+}
+
+
+.button3 {
+    background-color: #AD2BE5; /* Green */
+    font-family: 'Quicksand', sans-serif;
+    border: none;
+    color: white;
+    text-align: center;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    height: 45px;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    margin-top: 630px;   /* = -height / 2   */
+    margin-left: -150px; /* = -width / 2    */
+    position:absolute;
+    font-size: 16px;
+    border-radius: 25px;
+    font-weight:600;
+}
+
+.ct-label, .ct-chart-line {
+  stroke: white;
+  color: white;
+}
+
+.ct-series-a .ct-line {
+  /* Set the colour of this series line */
+  stroke: white;
+  /* Control the thikness of your lines */
+  stroke-width: 5px;
+  /* Create a dashed line with a pattern */
+  stroke-dasharray: 10px 20px;
+}

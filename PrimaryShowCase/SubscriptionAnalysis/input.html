@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SubAnalysis</title>
+
+    <link rel="icon" href="favicon.ico" type="image/png" />
+
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+
+  </head>
+  <body>
+    <main class="showcase-right">
+      <p class="intro2">Add a Subscription</p>
+      <h5 class="sub">Name of the service</h5>
+      <input id="service" class="inputES"></input>
+      <br>
+      <h5 class="sub">Category</h5>
+      <select id="category" class="inputES" name="Categories">
+        <option value="Categories" selected>Choose</option>
+        <option value="communication">Communication</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="fitness">Fitness</option>
+        <option value="home">Home</option>
+        <option value="professional">Professional</option>
+        <option value="shopping">Shopping</option>
+      </select>
+      <br>
+      <h5 class="sub">Cost per month</h5>
+      <input id="cost" class="inputES"></input>
+      <br>
+      <h5 class="sub">Estimate hours spent per month</h5>
+      <input id="time" class="inputES"></input>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </main>
+      <button id="addSub" onclick="addSubscription()" type="button" class="button2 showcase-btn">Add another subscription</button>
+      <button id="seeResult" onclick="graph()" type="reset" class="button3 showcase-btn">See results</button>
+
+
+      <script src="js/main.js"></script>
+
+      <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+      window.sr = ScrollReveal();
+      sr.reveal('.showcase-left', {
+        duration: 2000,
+        origin:'left',
+        delay: 1000,
+        distance:'300px'
+      });
+      sr.reveal('.showcase-right', {
+        duration: 2000,
+        origin:'right',
+        distance:'300px'
+      });
+      sr.reveal('.showcase-btn', {
+        duration: 2000,
+        delay: 1000,
+        origin:'bottom'
+      });
+  </script>
+
+  <script>
+  $(function() {
+    // Smooth Scrolling
+    $('a[href*="#"]:not([href="#"])').click(function() {
+      if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+        var target = $(this.hash);
+        target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+        if (target.length) {
+          $('html, body').animate({
+            scrollTop: target.offset().top
+          }, 1000);
+          return false;
+        }
+      }
+    });
+  });
+  </script>
+
+  </body>
+  </html>
