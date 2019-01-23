@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 //Mahlon Farbanish
+//Plays the Kevin Bacon game with IMDB datasets.
 
 public class Bacon {
 	private static HashMap<String, LinkedList<String>> actorMap = new HashMap<String, LinkedList<String>>();
